@@ -12,7 +12,6 @@ import it.polito.tdp.meteo.bean.Rilevamento;
 
 public class MeteoDAO {
 
-
 	public List<Rilevamento> getAllRilevamenti() {
 
 		final String sql = "SELECT Localita, Data, Umidita FROM situazione ORDER BY data ASC";
@@ -52,7 +51,7 @@ public class MeteoDAO {
 	}
 
 	public List<Citta> getAllCitta() {
-		
+
 		final String sql = "SELECT DISTINCT localita FROM situazione";
 
 		List<Citta> citta = new ArrayList<Citta>();
@@ -76,8 +75,36 @@ public class MeteoDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		
+
 		return citta;
+	}
+
+	public Double getUmiditàMedia(int mese, Citta citta) {
+
+		final String sql = "SELECT AVG(Umidita) AS U FROM situazione WHERE Localita=? AND MONTH(DATA)=?";
+
+		Double u=0.0;
+		try {
+			Connection conn = DBConnect.getInstance().getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, citta.getNome());
+			st.setInt(2, mese);
+
+			ResultSet rs = st.executeQuery();
+
+			rs.next();
+			
+			u = rs.getDouble("U");
+			
+			conn.close();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		return u;
 	}
 
 }

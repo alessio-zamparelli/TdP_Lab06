@@ -40,11 +40,16 @@ public class MeteoController {
 
 	@FXML
 	void doCalcolaUmidita(ActionEvent event) {
-		
+
 		Month m = boxMese.getValue();
 		
-		for(Citta c:model.getCitta()) {
-			
+		txtResult.clear();
+		
+		for (Citta c : model.getCitta()) {
+
+			Double u = model.getUmiditaMedia(m.getValue(), c);
+			txtResult.appendText(String.format("Città %s con Umidità %2.2f\n", c.getNome(), u));
+
 		}
 
 	}
