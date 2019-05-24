@@ -1,37 +1,37 @@
 package it.polito.tdp.meteo.db;
-
 import java.sql.Connection;
-
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 
 public class DBConnect {
 
-	static private final String jdbcUrl = "jdbc:mysql://localhost/meteo?user=root&password=root";
-	static private DBConnect instance = null;
+	private static String jdbcURL = "jdbc:mysql://localhost/meteo?serverTimezone=Europe/Rome";
 
-	private DBConnect() {
-		instance = this;
-	}
+	private static HikariDataSource ds = null;
 
-	public static DBConnect getInstance() {
-		if (instance == null)
-			return new DBConnect();
-		else {
-			return instance;
+	public static Connection getConnection() {
+
+		if (ds == null) {
+			HikariConfig config = new HikariConfig();
+			config.setJdbcUrl(jdbcURL);
+			config.setUsername("root");
+			config.setPassword("toor");
+			
+			//configurazione mysql
+			config.addDataSourceProperty("cachePrepStmts", "true");
+			config.addDataSourceProperty("preprStmtChacheSize", "250");
+			config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+			ds = new HikariDataSource(config);
 		}
-	}
-
-	public Connection getConnection() {
 		try {
-
-			Connection conn = DriverManager.getConnection(jdbcUrl);
-			return conn;
-
+			return ds.getConnection();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Cannot get connection " + jdbcUrl, e);
+			System.err.println("Errore connessione al DB");
+			throw new RuntimeException(e);
 		}
+
 	}
 
 }

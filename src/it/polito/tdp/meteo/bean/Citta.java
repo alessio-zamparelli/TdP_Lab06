@@ -1,6 +1,9 @@
 package it.polito.tdp.meteo.bean;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.util.Date;
+
 
 public class Citta {
 
@@ -73,6 +76,10 @@ public class Citta {
 	@Override
 	public String toString() {
 		return nome;
+	}
+
+	public double getUmiditaByDate(LocalDate partialDate) {
+		return this.rilevamenti.parallelStream().filter(a->a.getData().isEqual(partialDate)).map(a->a.getUmidita()).findFirst().get();
 	}
 	
 }
