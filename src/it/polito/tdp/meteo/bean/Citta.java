@@ -78,7 +78,7 @@ public class Citta {
 		return nome;
 	}
 
-	public double getUmiditaByDate(LocalDate partialDate) {
+	public Double getUmiditaByDate(LocalDate partialDate) {
 		return this.rilevamenti.parallelStream().filter(a->a.getData().isEqual(partialDate)).map(a->a.getUmidita()).findFirst().get();
 	}
 	
