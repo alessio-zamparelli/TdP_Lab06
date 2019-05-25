@@ -10,7 +10,6 @@ import it.polito.tdp.meteo.bean.Rilevamento;
 @SuppressWarnings("unused")
 public class TestMeteoDAO {
 
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
 		MeteoDAO dao = new MeteoDAO();

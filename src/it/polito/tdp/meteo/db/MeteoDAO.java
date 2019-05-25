@@ -28,7 +28,8 @@ public class MeteoDAO {
 
 			while (rs.next()) {
 
-				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data").toLocalDate(), rs.getInt("Umidita"));
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data").toLocalDate(),
+						rs.getInt("Umidita"));
 				rilevamenti.add(r);
 			}
 
@@ -47,7 +48,7 @@ public class MeteoDAO {
 		final String sql = "SELECT * FROM situazione WHERE localita=? AND MONTH(`data`) = ?";
 
 		List<Rilevamento> rilevamenti = new ArrayList<>();
-		
+
 		try {
 			Connection conn = DBConnect.getConnection();
 			PreparedStatement st = conn.prepareStatement(sql);
@@ -55,8 +56,9 @@ public class MeteoDAO {
 			st.setInt(2, mese);
 			ResultSet rs = st.executeQuery();
 
-			while(rs.next()) {
-				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("data").toLocalDate(), rs.getInt("umidita"));
+			while (rs.next()) {
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("data").toLocalDate(),
+						rs.getInt("umidita"));
 				rilevamenti.add(r);
 			}
 
@@ -116,7 +118,8 @@ public class MeteoDAO {
 				else
 					c = citta.get(rs.getString("Localita"));
 
-				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data").toLocalDate(), rs.getInt("Umidita"));
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data").toLocalDate(),
+						rs.getInt("Umidita"));
 				c.getRilevamenti().add(r);
 				citta.put(c.getNome(), c);
 			}
@@ -129,6 +132,34 @@ public class MeteoDAO {
 			throw new RuntimeException(e);
 		}
 		return new ArrayList<Citta>(citta.values());
+	}
+
+	public List<Rilevamento> getAvgRilevamentiMese(int mese) {
+		final String sql = "SELECT Localita, Data, AVG(umidita) as avgg FROM situazione "
+				+ "WHERE MONTH(`data`) = ? GROUP BY Localita ";
+		List<Rilevamento> res = new ArrayList<>();
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, mese);
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data").toLocalDate(),
+						rs.getInt("avgg"));
+				res.add(r);
+			}
+
+			conn.close();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return res;
 	}
 
 }

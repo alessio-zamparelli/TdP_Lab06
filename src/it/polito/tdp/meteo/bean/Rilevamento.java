@@ -6,9 +6,9 @@ public class Rilevamento {
 
 	private String localita;
 	private LocalDate data;
-	private int umidita;
+	private double umidita;
 
-	public Rilevamento(String localita, LocalDate data, int umidita) {
+	public Rilevamento(String localita, LocalDate data, double umidita) {
 		super();
 		this.localita = localita;
 		this.data = data;
@@ -31,7 +31,7 @@ public class Rilevamento {
 		this.data = data;
 	}
 
-	public int getUmidita() {
+	public double getUmidita() {
 		return umidita;
 	}
 
@@ -39,10 +39,10 @@ public class Rilevamento {
 		this.umidita = umidita;
 	}
 
-	 @Override
-	 public String toString() {
-	 return localita + " " + data + " " + umidita + "\n";
-	 }
+	@Override
+	public String toString() {
+		return String.format("Rilevamento [localita=%s, data=%s, umidita=%s]", localita, data, umidita);
+	}
 
 //	@Override
 //	public String toString() {

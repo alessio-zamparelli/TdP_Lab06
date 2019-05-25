@@ -4,11 +4,11 @@ public class SimpleCity {
 
 	private String nome;
 	private int costo;
-	
+
 	public SimpleCity(String nome) {
 		this.nome = nome;
 	}
-	
+
 	public SimpleCity(String nome, int costo) {
 		this.nome = nome;
 		this.costo = costo;
@@ -21,7 +21,7 @@ public class SimpleCity {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
 	public int getCosto() {
 		return costo;
 	}
@@ -57,7 +57,7 @@ public class SimpleCity {
 
 	@Override
 	public String toString() {
-		return nome;
+		return String.format("Nome: %s Costo: %d\n", this.nome, this.costo);
 	}
-	
+
 }
